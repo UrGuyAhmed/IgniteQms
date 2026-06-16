@@ -1,7 +1,6 @@
-
 :root {
     --bg-page: #ffffff;
-    --bg-form: #EEF2FF;           
+    --bg-form: #EEF2FF;          
     --accent-primary: #4F46E5;   
     --accent-hover: #3730A3;      
     --tagline-color: #4338CA;
@@ -22,10 +21,11 @@ html {
 
 body {
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    /* Allows normal vertical scrolling but hides horizontal scrolling */
+    overflow-x: hidden; 
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #1a1a1a;
+    /* Matches the footer background color to hide any gap at the very bottom */
+    background-color: #212121; 
 }
 
 /* --- NAVBAR --- */
@@ -38,7 +38,6 @@ body {
     color: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     
-    /* Locks navbar */
     position: fixed;
     top: 0;
     left: 0;
@@ -60,10 +59,7 @@ body {
 
 .nav-links { display: flex; list-style: none; gap: 40px; }
 .nav-links a { color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 500; transition: color 0.2s; }
-
-
 .nav-links a:hover, .nav-links a.active { color: var(--accent-primary); }
-
 
 .cta-button { 
     background-color: var(--accent-primary); 
@@ -81,15 +77,15 @@ body {
     transform: scale(1.02); 
 }
 
-
 #app-container {
     width: 100%;
-    transition: transform 0.8s ease-in-out; 
+    padding-top: 75px; /* Creates space for the fixed navbar */
 }
 
+/* Base Page Styles */
 .page {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh; /* Allows pages to expand naturally while maintaining a minimum screen height */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,11 +94,73 @@ body {
     font-weight: bold;
 }
 
-/* Background Colors for Pages 1, 2, 3 */
+/* Background Colors for Placeholder Pages 1 & 2 */
 .bg-slate { background-color: #334155; }
 .bg-blue { background-color: #2563eb; }
-.bg-green { background-color: #10b981; }
 
+/* =========================================
+   --- PAGE 3 STYLES (CLIENTS SLIDER) ---
+   ========================================= */
+.clients-section {
+    background-color: #ffffff; 
+    color: #1e3a8a;
+    flex-direction: column;
+    padding: 100px 0; /* 0 padding on the sides allows the slider to go edge-to-edge */
+    overflow: hidden; 
+}
+
+.clients-section h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+/* Creates a window for the slider and fades the left/right edges smoothly */
+.slider-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.slider-track {
+    display: flex;
+    align-items: center;
+    gap: 60px; /* Spacing between logos */
+    width: max-content; /* Allows the track to be as long as the images need */
+    animation: slide 35s linear infinite; /* Adjust the 35s to make it move faster or slower */
+}
+
+/* Pauses the slider if the user hovers their mouse over it */
+.slider-track:hover {
+    animation-play-state: paused;
+}
+
+/* FORCES ALL PICTURES TO BE THE EXACT SAME SIZE */
+.slider-logo {
+    width: 150px;  /* Strict fixed width */
+    height: 80px;  /* Strict fixed height */
+    object-fit: contain; /* Prevents stretching - scales image to fit inside the 150x80 box */
+    flex-shrink: 0; /* Stops flexbox from shrinking the logos */
+    transition: transform 0.3s ease;
+}
+
+.slider-logo:hover {
+    transform: scale(1.1); /* Slight pop effect when hovered */
+}
+
+/* The Infinite Scroll Animation */
+@keyframes slide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Moves the track exactly half of its length to perfectly loop the duplicated logos */
+        transform: translateX(calc(-50% - 30px)); 
+    }
+}
 
 /* =========================================
    --- PAGE 4 STYLES (CONTACT & FOOTER) ---
@@ -115,11 +173,11 @@ body {
     align-items: stretch;
     background-color: var(--bg-page); 
     color: var(--text-main);
-    
-   
-    height: auto; 
-    min-height: auto; 
+    min-height: 100vh;
+    height: auto;
     padding-top: 60px; 
+    font-size: 1rem;
+    font-weight: normal;
 }
 
 .contact-container {
@@ -128,8 +186,7 @@ body {
     gap: 50px;
     width: 90%;
     max-width: 1200px;
-    
-    margin: 30px auto 30px auto; 
+    margin: 40px auto 60px auto; 
     align-items: start;
 }
 
@@ -201,7 +258,7 @@ body {
     margin-top: 2px;
 }
 
-/* --- FORM  --- */
+/* --- FORM --- */
 .form-column {
     display: flex;
     justify-content: flex-end;
@@ -263,7 +320,7 @@ body {
     background-color: #212121;
     color: #9ca3af;
     padding: 30px 5% 15px 5%; 
-    font-size: 13px; /* Slightly smaller text for a tighter look */
+    font-size: 13px; 
     margin-top: auto; 
     font-weight: normal;
 }
@@ -272,23 +329,22 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Added flex-wrap so it adapts gracefully on smaller screens */
     flex-wrap: wrap; 
     gap: 20px;
     border-bottom: 1px solid #374151;
-    padding-bottom: 20px; /* Cut the bottom spacing in half */
+    padding-bottom: 20px; 
 }
 
 .footer-brand {
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Tighter gap between logo and text */
+    gap: 8px; 
     max-width: 400px;
     text-align: left;
 }
 
 .footer-logo { 
-    height: 35px; /* Shrunk the logo slightly */
+    height: 35px; 
     width: auto; 
     align-self: flex-start; 
 }
@@ -303,8 +359,9 @@ body {
     gap: 12px; 
 }
 
+/* Styles FontAwesome Icons perfectly in the circles */
 .social-circle {
-    width: 36px; /* Slightly smaller social buttons */
+    width: 36px; 
     height: 36px;
     background-color: var(--accent-primary);
     border-radius: 50%;
@@ -312,7 +369,7 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 16px;
     color: white; 
     transition: background-color 0.2s;
 }
@@ -325,10 +382,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap; /* Makes the bottom row flexible */
+    flex-wrap: wrap; 
     gap: 15px;
-    padding-top: 15px; /* Cut the top spacing in half */
-    position: relative;
+    padding-top: 15px; 
     font-size: 12px;
 }
 
@@ -338,7 +394,7 @@ body {
     gap: 6px;
     background-color: #ffffff;
     color: #000000;
-    padding: 4px 10px; /* Tighter padding on the language button */
+    padding: 4px 10px; 
     border-radius: 4px;
     font-weight: bold;
 }
@@ -347,7 +403,6 @@ body {
 .footer-links a:hover { color: #ffffff; }
 
 .scroll-top-btn {
-    position: relative; /* Removed absolute positioning to prevent overlap issues on small screens */
     background-color: #ffffff;
     color: #333333;
     border: none;
@@ -364,11 +419,14 @@ body {
 
 .scroll-top-btn:hover { background-color: #e2e8f0; }
 
-/* --- STANDARDIZED MOBILE TRANSLATIONS --- */
+/* --- STANDARDIZED MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
     .contact-container { grid-template-columns: 1fr; gap: 40px; }
     .form-column { justify-content: center; }
     .footer-top, .footer-bottom { flex-direction: column; text-align: center; justify-content: center;}
     .footer-brand { align-items: center; }
     .footer-brand p { text-align: center; }
+    
+    /* Pulls logos slightly closer together on small mobile screens */
+    .clients-grid { gap: 30px 40px; } 
 }
